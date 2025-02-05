@@ -21,14 +21,14 @@ export default function Card({
 	}
 	return (
 		<div
-			className={`relative aspect-square overflow-hidden rounded`}
+			className={`relative aspect-square min-h-12 overflow-hidden rounded`}
 			onClick={handleClick}
 		>
 			<button
 				disabled={
 					matched.find((item) => item.value === card.value) && true
 				}
-				className={`relative h-full w-full bg-blue-100 transform-3d transition-all duration-300 ${
+				className={`relative h-full w-full bg-sky-200 transform-3d transition-all duration-300 ${
 					matched.find((item) => item.value === card.value) ||
 					selected.first?.id === card.id ||
 					selected.second?.id === card.id

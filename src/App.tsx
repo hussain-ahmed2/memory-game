@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Card from "./components/Card";
 
 export interface CardType {
@@ -52,6 +52,10 @@ export default function App() {
 		setIsWon(false);
 	}
 
+	function handleChange(event: ChangeEvent<HTMLSelectElement>) {
+		setLength(parseInt(event.target.value));
+	}
+
 	useEffect(() => {
 		let id: number;
 		if (selected.first.value !== null && selected.second.value !== null) {
@@ -70,15 +74,30 @@ export default function App() {
 			console.log("game over");
 			setIsWon(true);
 		}
-	}, [matched, length]);
+	}, [matched]);
+
+	useEffect(() => {
+		handleReset();
+	}, [length]);
 
 	return (
 		<div>
-			<h1 className="text-center text-2xl font-bold py-10">
+			<h1 className="text-center text-2xl font-bold mt-10">
 				Memory Game
 			</h1>
+			<div className="mx-auto w-fit py-5 flex items-center gap-2 justify-center">
+				<label htmlFor="length">Select Length</label>
+				<select className="border border-blue-200 focus:ring-2 outline-none ring-blue-300 px-4 py-1 rounded-md " onChange={handleChange} defaultValue={4} name="length" id="length">
+					<option value='2'>2</option>
+					<option value='4'>4</option>
+					<option value="6">6</option>
+					<option value="8">8</option>
+					<option value="10">10</option>
+				</select>
+			</div>
 			<div
-				className={`grid grid-cols-[repeat(${length},60px)] justify-center gap-2`}
+				style={{gridTemplateColumns: `repeat(${length}, 60px)`}}
+				className={`grid justify-center gap-2 p-4`}
 			>
 				{cards.map((card, index) => (
 					<Card
