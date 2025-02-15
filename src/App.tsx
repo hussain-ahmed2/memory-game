@@ -26,6 +26,7 @@ export default function App() {
 	const [length, setLength] = useState<number>(4);
 	const [cards, setCards] = useState<CardType[]>(generateCards(length));
 	const [matched, setMatched] = useState<CardType[]>([]);
+	const [flipped, setFlipped] = useState<boolean>(false);
 	const [selected, setSelected] = useState<SelectedType>(
 		INITIAL_SELECTED_STATE
 	);
@@ -50,6 +51,7 @@ export default function App() {
 		setSelected(INITIAL_SELECTED_STATE);
 		setCards(generateCards(length));
 		setIsWon(false);
+		setFlipped(false);
 	}
 
 	function handleChange(event: ChangeEvent<HTMLSelectElement>) {
@@ -59,6 +61,7 @@ export default function App() {
 	useEffect(() => {
 		let id: number;
 		if (selected.first.value !== null && selected.second.value !== null) {
+			setFlipped(true);
 			if (selected.first.value === selected.second.value) {
 				setMatched((prev) => [...prev, selected.second]);
 			}
@@ -81,7 +84,7 @@ export default function App() {
 	}, [length]);
 
 	return (
-		<div>
+		<div className="w-fit mx-auto overflow-auto">
 			<h1 className="text-center text-2xl font-bold mt-10">
 				Memory Game
 			</h1>
@@ -97,7 +100,7 @@ export default function App() {
 			</div>
 			<div
 				style={{gridTemplateColumns: `repeat(${length}, 60px)`}}
-				className={`grid justify-center gap-2 p-4`}
+				className={`grid justify-center gap-2 p-4 mx-10`}
 			>
 				{cards.map((card, index) => (
 					<Card
@@ -108,6 +111,9 @@ export default function App() {
 						setSelected={setSelected}
 					/>
 				))}
+			</div>
+			<div className={`${flipped ? "block" : "hidden"}`}>
+				<button onClick={handleReset} className="mx-auto block border bg-sky-500 text-white px-5 py-2 rounded cursor-pointer hover:bg-sky-600 mt-3">Reset</button>
 			</div>
 			<div>
 				<div
